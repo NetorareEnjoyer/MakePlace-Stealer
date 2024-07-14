@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>2</ID>
+      <Description>"Disable Save Check"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : MakePlace-Win64-Shipping.exe
+  Version: 
+  Date   : 2024-07-14
+  Author : reapie
+
+  Disables code to check if saving is allowed
+}
+
+[ENABLE]
+
+aobscanmodule(INJECT,MakePlace-Win64-Shipping.exe,E8 7A D0 17 FD) // should be unique
+alloc(newmem,$1000,INJECT)
+
+label(code)
+label(return)
+
+newmem:
+  mov eax, -1
+
+code:
+  //call MakePlace-Win64-Shipping.exe+B4C440
+  jmp return
+
+INJECT:
+  jmp newmem
+return:
+registersymbol(INJECT)
+
+[DISABLE]
+
+INJECT:
+  db E8 7A D0 17 FD
+
+unregistersymbol(INJECT)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: MakePlace-Win64-Shipping.exe+39CF3C1
+
+MakePlace-Win64-Shipping.exe+39CF39D: 74 0A                 - je MakePlace-Win64-Shipping.exe+39CF3A9
+MakePlace-Win64-Shipping.exe+39CF39F: 48 8B 54 24 20        - mov rdx,[rsp+20]
+MakePlace-Win64-Shipping.exe+39CF3A4: 8D 78 FF              - lea edi,[rax-01]
+MakePlace-Win64-Shipping.exe+39CF3A7: EB 07                 - jmp MakePlace-Win64-Shipping.exe+39CF3B0
+MakePlace-Win64-Shipping.exe+39CF3A9: 48 8D 15 CC AF 6C 01  - lea rdx,[MakePlace-Win64-Shipping.exe+509A37C]
+MakePlace-Win64-Shipping.exe+39CF3B0: 8B CF                 - mov ecx,edi
+MakePlace-Win64-Shipping.exe+39CF3B2: E8 99 45 14 FD        - call MakePlace-Win64-Shipping.exe+B13950
+MakePlace-Win64-Shipping.exe+39CF3B7: 4C 8D 44 24 20        - lea r8,[rsp+20]
+MakePlace-Win64-Shipping.exe+39CF3BC: 8B D0                 - mov edx,eax
+MakePlace-Win64-Shipping.exe+39CF3BE: 48 8B CB              - mov rcx,rbx
+// ---------- INJECTING HERE ----------
+MakePlace-Win64-Shipping.exe+39CF3C1: E8 7A D0 17 FD        - call MakePlace-Win64-Shipping.exe+B4C440
+// ---------- DONE INJECTING  ----------
+MakePlace-Win64-Shipping.exe+39CF3C6: 83 F8 FF              - cmp eax,-01
+MakePlace-Win64-Shipping.exe+39CF3C9: 74 22                 - je MakePlace-Win64-Shipping.exe+39CF3ED
+MakePlace-Win64-Shipping.exe+39CF3CB: 48 98                 - cdqe 
+MakePlace-Win64-Shipping.exe+39CF3CD: 48 8D 0C 80           - lea rcx,[rax+rax*4]
+MakePlace-Win64-Shipping.exe+39CF3D1: 48 8B 03              - mov rax,[rbx]
+MakePlace-Win64-Shipping.exe+39CF3D4: 48 8D 04 C8           - lea rax,[rax+rcx*8]
+MakePlace-Win64-Shipping.exe+39CF3D8: 48 85 C0              - test rax,rax
+MakePlace-Win64-Shipping.exe+39CF3DB: 74 10                 - je MakePlace-Win64-Shipping.exe+39CF3ED
+MakePlace-Win64-Shipping.exe+39CF3DD: 48 83 C0 10           - add rax,10
+MakePlace-Win64-Shipping.exe+39CF3E1: 74 0A                 - je MakePlace-Win64-Shipping.exe+39CF3ED
+}
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <CheatCodes>
+    <CodeEntry>
+      <Description>Save check</Description>
+      <AddressString>MakePlace-Win64-Shipping.exe+39CF3B0</AddressString>
+      <Before>
+        <Byte>15</Byte>
+        <Byte>CC</Byte>
+        <Byte>AF</Byte>
+        <Byte>6C</Byte>
+        <Byte>01</Byte>
+      </Before>
+      <Actual>
+        <Byte>8B</Byte>
+        <Byte>CF</Byte>
+        <Byte>E8</Byte>
+        <Byte>99</Byte>
+        <Byte>45</Byte>
+        <Byte>14</Byte>
+        <Byte>FD</Byte>
+        <Byte>4C</Byte>
+        <Byte>8D</Byte>
+        <Byte>44</Byte>
+        <Byte>24</Byte>
+        <Byte>20</Byte>
+        <Byte>8B</Byte>
+        <Byte>D0</Byte>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+        <Byte>CB</Byte>
+        <Byte>E8</Byte>
+        <Byte>7A</Byte>
+        <Byte>D0</Byte>
+        <Byte>17</Byte>
+        <Byte>FD</Byte>
+        <Byte>83</Byte>
+        <Byte>F8</Byte>
+        <Byte>FF</Byte>
+        <Byte>74</Byte>
+      </Actual>
+      <After>
+        <Byte>22</Byte>
+        <Byte>48</Byte>
+        <Byte>98</Byte>
+        <Byte>48</Byte>
+        <Byte>8D</Byte>
+      </After>
+    </CodeEntry>
+  </CheatCodes>
+  <UserdefinedSymbols/>
+</CheatTable>
